@@ -18,13 +18,7 @@ extension SearchViewController: UISearchBarDelegate {
 //
 //  }
   
-  func listToDownload() {
-    
-   // UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    self.searchResults = queryService.getSearchResults()
-    self.tableView.reloadData()
-    self.tableView.setContentOffset(CGPoint.zero, animated: false)
-  }
+ 
   
   func position(for bar: UIBarPositioning) -> UIBarPosition {
     return .topAttached

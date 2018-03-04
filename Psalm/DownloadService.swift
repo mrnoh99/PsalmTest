@@ -14,11 +14,12 @@ class DownloadService {
 
   func startDownload(_ track: Track) {
     // 1
+  
     let download = Download(track: track)
     // 2
     print (track.previewURL)
     download.task = downloadsSession.downloadTask(with:  track.previewURL)
-    // 3
+    
     download.task!.resume()
     // 4
     download.isDownloading = true

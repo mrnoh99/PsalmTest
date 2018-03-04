@@ -6,11 +6,10 @@ import Foundation
 class QueryService {
   let koreanName: String = "시편"
   let englishName: String = "Psalm"
-  let numberOfChapters: Int = 10 //150
+  let numberOfChapters: Int = 150 //150
   let identityCode: String = "123"
   
-  typealias JSONDictionary = [String: Any]
-  typealias QueryResult = ([Track]?, String) -> ()
+  
 
   // 1
   let defaultSession = URLSession(configuration: .default)

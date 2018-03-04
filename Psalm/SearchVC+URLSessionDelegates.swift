@@ -16,12 +16,20 @@ extension SearchViewController: URLSessionDownloadDelegate {
     print(destinationURL)
     // 3
     let fileManager = FileManager.default
-    try? fileManager.removeItem(at: destinationURL)
+  //  try? fileManager.removeItem(at: destinationURL)
+    if  !FileManager.default.fileExists(atPath: destinationURL.path) {
     do {
       try fileManager.copyItem(at: location, to: destinationURL)
       download?.track.downloaded = true
+      print ("copied")
+      print(destinationURL)
     } catch let error {
       print("Could not copy file to disk: \(error.localizedDescription)")
+      }
+      
+    }else {
+      download?.track.downloaded = true
+      
     }
     // 4
     if let index = download?.track.index {

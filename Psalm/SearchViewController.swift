@@ -31,11 +31,26 @@ class SearchViewController: UIViewController {
     return documentsPath.appendingPathComponent(url.lastPathComponent)
   }
 
-  override func viewDidLoad() {
+    @IBAction func allDownloadTapped(_ sender: Any) {
+      for i in 0...queryService.numberOfChapters - 1{
+      let indexPath = IndexPath(item: i, section: 0)
+            let track = searchResults[indexPath.row]
+            downloadService.startDownload(track)
+              reload(indexPath.row)
+      }
+    }
+    
+    
+    
+    override func viewDidLoad() {
     super.viewDidLoad()
+    searchResults = queryService.getSearchResults()
     tableView.tableFooterView = UIView()
     downloadService.downloadsSession = downloadsSession
-    listToDownload()
+      checkDownloaded(results: searchResults)
+      tableView.reloadData()
+      tableView.setContentOffset(CGPoint.zero, animated: false)
+      
   }
 
   func playDownload(_ track: Track) {
@@ -126,6 +141,24 @@ extension SearchViewController: TrackCellDelegate {
     tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
   }
 
+  func checkDownloaded(results: [Track])-> Int  {
+    var j = 0
+    for i in 0...queryService.numberOfChapters - 1{
+    
+    let fileName = results[i].artist
+      let destinationFileUrl = documentsPath.appendingPathComponent(fileName)
+      if  FileManager.default.fileExists(atPath: destinationFileUrl.path) {
+       results[i].downloaded = true
+        j += j
+    }
+    
+  }
+return j
+  }
+  
+  
+    
 }
+
 
 
