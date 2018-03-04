@@ -9,15 +9,23 @@ class SearchViewController: UIViewController {
  
   
   @IBOutlet weak var tableView: UITableView!
-  @IBOutlet weak var searchBar: UISearchBar!
+ 
 //  lazy var tapRecognizer: UITapGestureRecognizer = {
 //    var recognizer = UITapGestureRecognizer(target:self, action: #selector(dismissKeyboard))
 //    return recognizer
 //  }()
-  
+  var audioPlayer = AVAudioPlayer()
+  var quePlayer = AVQueuePlayer()
   var searchResults: [Track] = []
   let queryService = QueryService()
   let downloadService = DownloadService()
+  var isDownloadingInMain = false
+  var noOfDownloadedTract = 0 {
+    didSet {
+      donwloadedLabel.text = "\(noOfDownloadedTract)"+"/150"
+    }
+    
+  }
   // Create downloadsSession here, to set self as delegate
   lazy var downloadsSession: URLSession = {
  //  let configuration = URLSessionConfiguration.default
@@ -31,42 +39,57 @@ class SearchViewController: UIViewController {
     return documentsPath.appendingPathComponent(url.lastPathComponent)
   }
 
+    
+    @IBOutlet weak var donwloadedLabel: UILabel!
+    
+    @IBOutlet weak var allDownloadLabel: UIButton!
     @IBAction func allDownloadTapped(_ sender: Any) {
-      for i in 0...queryService.numberOfChapters - 1{
+      
+      if !isDownloadingInMain {
+        isDownloadingInMain = !isDownloadingInMain
+        allDownloadLabel.setTitle("다운로드 중단", for: .normal)
+        
+        for i in 0...queryService.numberOfChapters - 1{
       let indexPath = IndexPath(item: i, section: 0)
             let track = searchResults[indexPath.row]
             downloadService.startDownload(track)
               reload(indexPath.row)
       }
+      } else {
+     isDownloadingInMain = !isDownloadingInMain
+         allDownloadLabel.setTitle("다운로드 다시시작", for: .normal)
+        for i in 0...queryService.numberOfChapters - 1{
+      let indexPath = IndexPath(item: i, section: 0)
+      let track = searchResults[indexPath.row]
+      downloadService.cancelDownload(track)
+      reload(indexPath.row)
     }
-    
-    
-    
+  }
+  }
     override func viewDidLoad() {
     super.viewDidLoad()
     searchResults = queryService.getSearchResults()
     tableView.tableFooterView = UIView()
     downloadService.downloadsSession = downloadsSession
-      checkDownloaded(results: searchResults)
+    noOfDownloadedTract = checkDownloaded(results: searchResults)
+      print (noOfDownloadedTract)
       tableView.reloadData()
       tableView.setContentOffset(CGPoint.zero, animated: false)
       
   }
 
-  func playDownload(_ track: Track) {
-    let playerViewController = AVPlayerViewController()
-    playerViewController.entersFullScreenWhenPlaybackBegins = true
-    playerViewController.exitsFullScreenWhenPlaybackEnds = true
-    present(playerViewController, animated: true, completion: nil)
+
+    func playDownload(_ track: Track) {
+
     let url = localFilePath(for: track.previewURL)
-    let player = AVPlayer(url: url)
-    playerViewController.player = player
-    player.play()
-  }
+    try! audioPlayer = AVAudioPlayer(contentsOf: url)
+      audioPlayer.prepareToPlay()
+      audioPlayer.play()
+    }
+ 
   
 }
-
-// MARK: - UITableView
+  // MARK: - UITableView
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -112,22 +135,6 @@ extension SearchViewController: TrackCellDelegate {
     }
   }
 
-  func pauseTapped(_ cell: TrackCell) {
-    if let indexPath = tableView.indexPath(for: cell) {
-      let track = searchResults[indexPath.row]
-      downloadService.pauseDownload(track)
-      reload(indexPath.row)
-    }
-  }
-  
-  func resumeTapped(_ cell: TrackCell) {
-    if let indexPath = tableView.indexPath(for: cell) {
-      let track = searchResults[indexPath.row]
-      downloadService.resumeDownload(track)
-      reload(indexPath.row)
-    }
-  }
-  
   func cancelTapped(_ cell: TrackCell) {
     if let indexPath = tableView.indexPath(for: cell) {
       let track = searchResults[indexPath.row]
@@ -149,7 +156,8 @@ extension SearchViewController: TrackCellDelegate {
       let destinationFileUrl = documentsPath.appendingPathComponent(fileName)
       if  FileManager.default.fileExists(atPath: destinationFileUrl.path) {
        results[i].downloaded = true
-        j += j
+        reload(i)
+        j += 1
     }
     
   }

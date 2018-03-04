@@ -57,16 +57,6 @@
                                                         <action selector="cancelTapped:" destination="CN0-hZ-xaQ" eventType="touchUpInside" id="Z6Y-xY-X5y"/>
                                                     </connections>
                                                 </button>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufl-ey-FHq">
-                                                    <rect key="frame" x="269" y="12" width="42" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Pause">
-                                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="pauseOrResumeTapped:" destination="CN0-hZ-xaQ" eventType="touchUpInside" id="m5O-VL-yLs"/>
-                                                    </connections>
-                                                </button>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100% of 1.35MB" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4CD-KR-7zc">
                                                     <rect key="frame" x="282" y="44" width="84" height="14"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -91,7 +81,6 @@
                                             <outlet property="artistLabel" destination="p7o-vZ-w0K" id="Zgw-fa-nr6"/>
                                             <outlet property="cancelButton" destination="kBc-K7-P02" id="1Rb-ka-FyU"/>
                                             <outlet property="downloadButton" destination="auq-xb-Coy" id="uLo-OJ-TB2"/>
-                                            <outlet property="pauseButton" destination="ufl-ey-FHq" id="HWm-Qk-gSC"/>
                                             <outlet property="progressLabel" destination="4CD-KR-7zc" id="0vv-xu-Xow"/>
                                             <outlet property="progressView" destination="A2H-JY-Sug" id="u5c-k4-1LB"/>
                                             <outlet property="titleLabel" destination="eai-Fh-5KC" id="toC-U2-Fpp"/>
@@ -104,18 +93,30 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMc-gk-bH7">
-                                <rect key="frame" x="58" y="40" width="245" height="30"/>
+                                <rect key="frame" x="58" y="40" width="158" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="전체다운로드"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <state key="normal" title="전체다운로드">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="allDownloadTapped:" destination="dGf-6A-1OJ" eventType="touchUpInside" id="DuE-Cf-Cay"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMj-pa-Oeg">
+                                <rect key="frame" x="224" y="44" width="135" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="7mV-2r-qaO"/>
                     </view>
                     <connections>
+                        <outlet property="allDownloadLabel" destination="uMc-gk-bH7" id="WQt-Lz-FJ1"/>
+                        <outlet property="donwloadedLabel" destination="WMj-pa-Oeg" id="iBc-v6-Twn"/>
                         <outlet property="tableView" destination="gxa-dF-wgj" id="ne5-Q4-qZK"/>
                     </connections>
                 </viewController>

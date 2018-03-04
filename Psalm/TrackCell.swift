@@ -3,8 +3,8 @@
 import UIKit
 
 protocol TrackCellDelegate {
-  func pauseTapped(_ cell: TrackCell)
-  func resumeTapped(_ cell: TrackCell)
+//  func pauseTapped(_ cell: TrackCell)
+//  func resumeTapped(_ cell: TrackCell)
   func cancelTapped(_ cell: TrackCell)
   func downloadTapped(_ cell: TrackCell)
 }
@@ -23,14 +23,14 @@ class TrackCell: UITableViewCell {
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var downloadButton: UIButton!
   
-  @IBAction func pauseOrResumeTapped(_ sender: AnyObject) {
-    if(pauseButton.titleLabel!.text == "Pause") {
-      delegate?.pauseTapped(self)
-    } else {
-      delegate?.resumeTapped(self)
-    }
-  }
-  
+//  @IBAction func pauseOrResumeTapped(_ sender: AnyObject) {
+//    if(pauseButton.titleLabel!.text == "Pause") {
+//      delegate?.pauseTapped(self)
+//    } else {
+//      delegate?.resumeTapped(self)
+//    }
+//  }
+//
   @IBAction func cancelTapped(_ sender: AnyObject) {
     delegate?.cancelTapped(self)
   }
@@ -49,11 +49,11 @@ class TrackCell: UITableViewCell {
     if let download = download {
       showDownloadControls = true      
       let title = download.isDownloading ? "Pause" : "Resume"
-      pauseButton.setTitle(title, for: .normal)
+   //   pauseButton.setTitle(title, for: .normal)
       progressLabel.text = download.isDownloading ? "Downloading..." : "Paused"
     }
 
-    pauseButton.isHidden = !showDownloadControls
+ //   pauseButton.isHidden = !showDownloadControls
     cancelButton.isHidden = !showDownloadControls
     progressView.isHidden = !showDownloadControls
     progressLabel.isHidden = !showDownloadControls

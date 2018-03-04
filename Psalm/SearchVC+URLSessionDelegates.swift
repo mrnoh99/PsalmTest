@@ -21,6 +21,9 @@ extension SearchViewController: URLSessionDownloadDelegate {
     do {
       try fileManager.copyItem(at: location, to: destinationURL)
       download?.track.downloaded = true
+       DispatchQueue.main.async {
+        self.noOfDownloadedTract += 1
+      }
       print ("copied")
       print(destinationURL)
     } catch let error {
@@ -28,7 +31,7 @@ extension SearchViewController: URLSessionDownloadDelegate {
       }
       
     }else {
-      download?.track.downloaded = true
+      
       
     }
     // 4
