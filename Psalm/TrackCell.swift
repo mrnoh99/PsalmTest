@@ -41,7 +41,7 @@ class TrackCell: UITableViewCell {
   
   func configure(track: Track, downloaded: Bool, download: Download?) {
     titleLabel.text = track.name
-    artistLabel.text = track.artist
+    artistLabel.text = "" //track.artist
 
     // Download controls are Pause/Resume, Cancel buttons, progress info
     var showDownloadControls = false

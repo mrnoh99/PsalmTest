@@ -5,6 +5,7 @@ import UIKit
 import AVKit
 import AVFoundation
 
+
 class SearchViewController: UIViewController {
  
   
@@ -14,6 +15,7 @@ class SearchViewController: UIViewController {
 //    var recognizer = UITapGestureRecognizer(target:self, action: #selector(dismissKeyboard))
 //    return recognizer
 //  }()
+  
   var audioPlayer = AVAudioPlayer()
   var quePlayer = AVQueuePlayer()
   var searchResults: [Track] = []
@@ -23,6 +25,13 @@ class SearchViewController: UIViewController {
   var noOfDownloadedTract = 0 {
     didSet {
       donwloadedLabel.text = "\(noOfDownloadedTract)"+"/150"
+      if noOfDownloadedTract == 0 {
+        allDownloadLabel.setTitle("전체설치시작", for: .normal)
+        allDownloadLabel.isEnabled = false
+      } else if noOfDownloadedTract == queryService.numberOfChapters  {
+        allDownloadLabel.setTitle("전체설치완료", for: .disabled)
+        allDownloadLabel.isEnabled = false
+      } 
     }
     
   }
@@ -45,9 +54,13 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var allDownloadLabel: UIButton!
     @IBAction func allDownloadTapped(_ sender: Any) {
       
+      let reachability = Reachability()!
+      print (reachability.connection)
+      if reachability.connection == .wifi {
+        
       if !isDownloadingInMain {
         isDownloadingInMain = !isDownloadingInMain
-        allDownloadLabel.setTitle("다운로드 중단", for: .normal)
+        allDownloadLabel.setTitle("설치중단", for: .normal)
         
         for i in 0...queryService.numberOfChapters - 1{
       let indexPath = IndexPath(item: i, section: 0)
@@ -57,7 +70,7 @@ class SearchViewController: UIViewController {
       }
       } else {
      isDownloadingInMain = !isDownloadingInMain
-         allDownloadLabel.setTitle("다운로드 다시시작", for: .normal)
+         allDownloadLabel.setTitle("설치 재시작", for: .normal)
         for i in 0...queryService.numberOfChapters - 1{
       let indexPath = IndexPath(item: i, section: 0)
       let track = searchResults[indexPath.row]
@@ -65,6 +78,12 @@ class SearchViewController: UIViewController {
       reload(indexPath.row)
     }
   }
+      } else {
+   connectionAlert(title: "와이파이연결 이상", message: "와이파이연결이 약하거나 없습니다. 다시 연결후 시도하십시오")
+        
+      }
+      
+      
   }
     override func viewDidLoad() {
     super.viewDidLoad()
@@ -92,7 +111,10 @@ class SearchViewController: UIViewController {
   // MARK: - UITableView
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
+  
+ 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
     return searchResults.count
   }
 
@@ -130,8 +152,12 @@ extension SearchViewController: TrackCellDelegate {
   func downloadTapped(_ cell: TrackCell) {
     if let indexPath = tableView.indexPath(for: cell) {
       let track = searchResults[indexPath.row]
+    //  searchResults.remove(at: indexPath.row)
       downloadService.startDownload(track)
       reload(indexPath.row)
+      tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+      
+      
     }
   }
 

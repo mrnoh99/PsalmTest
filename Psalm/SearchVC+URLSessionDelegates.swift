@@ -24,6 +24,7 @@ extension SearchViewController: URLSessionDownloadDelegate {
        DispatchQueue.main.async {
         self.noOfDownloadedTract += 1
       }
+      
       print ("copied")
       print(destinationURL)
     } catch let error {
@@ -37,6 +38,7 @@ extension SearchViewController: URLSessionDownloadDelegate {
     // 4
     if let index = download?.track.index {
       DispatchQueue.main.async {
+        
         self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
       }
     }
@@ -59,6 +61,8 @@ extension SearchViewController: URLSessionDownloadDelegate {
       if let trackCell = self.tableView.cellForRow(at: IndexPath(row: download.track.index,
         section: 0)) as? TrackCell {
         trackCell.updateDisplay(progress: download.progress, totalSize: totalSize)
+        self.tableView.scrollToRow(at: IndexPath(row: download.track.index,section: 0), at: .top, animated: true)
+        
       }
     }
   }

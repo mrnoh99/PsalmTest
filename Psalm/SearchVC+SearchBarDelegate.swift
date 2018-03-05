@@ -24,11 +24,11 @@ extension SearchViewController: UISearchBarDelegate {
     return .topAttached
   }
   
-//  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//    view.addGestureRecognizer(tapRecognizer)
-//  }
-//  
-//  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//    view.removeGestureRecognizer(tapRecognizer)
-//  }
+  func connectionAlert(title: String, message: String) {
+    
+    let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+    alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+    self.present(alert, animated: true, completion: nil)
+    
+  }
 }
